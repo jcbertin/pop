@@ -12,7 +12,7 @@
 #import "POPAnimationPrivate.h"
 #import "POPMath.h"
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 #import <UIKit/UIKit.h>
 #endif
 

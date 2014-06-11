@@ -19,10 +19,12 @@
 
 #import <pop/POPLayerExtras.h>
 
+#if !TARGET_ATV
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
 #import <AppKit/NSLayoutConstraint.h>
+#endif
 #endif
 
 // common threshold definitions
@@ -533,6 +535,8 @@ static POPStaticAnimatablePropertyState _staticStates[] =
     0.01
   },
 
+#if !TARGET_ATV
+	
   {kPOPLayoutConstraintConstant,
     ^(NSLayoutConstraint *obj, CGFloat values[]) {
       values[0] = obj.constant;
@@ -542,6 +546,9 @@ static POPStaticAnimatablePropertyState _staticStates[] =
     },
     0.01
   },
+
+#endif
+
 #if SCENEKIT_SDK_AVAILABLE
 
   /* SceneKit */
@@ -820,8 +827,8 @@ static POPStaticAnimatablePropertyState _staticStates[] =
   },
   
 #endif
-    
-#if TARGET_OS_IPHONE
+
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
   /* UIView */
 

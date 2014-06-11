@@ -9,7 +9,11 @@
 
 #import "POPDecayAnimationInternal.h"
 
-#if TARGET_OS_IPHONE
+#if TARGET_ATV
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+#import <CoreImage/CoreImage.h>
+#endif
+#elif TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #endif
 
@@ -100,7 +104,7 @@ DEFINE_RW_PROPERTY(POPDecayAnimationState, deceleration, setDeceleration:, CGFlo
     CGSize negativeOriginalVelocitySize = CGSizeMake(-originalVelocitySize.width, -originalVelocitySize.height);
     reversedVelocity = [NSValue valueWithCGSize:negativeOriginalVelocitySize];
   } else if (velocityType == kPOPValueEdgeInsets) {
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
     UIEdgeInsets originalVelocityInsets = [self.originalVelocity UIEdgeInsetsValue];
     UIEdgeInsets negativeOriginalVelocityInsets = UIEdgeInsetsMake(-originalVelocityInsets.top, -originalVelocityInsets.left, -originalVelocityInsets.bottom, -originalVelocityInsets.right);
     reversedVelocity = [NSValue valueWithUIEdgeInsets:negativeOriginalVelocityInsets];

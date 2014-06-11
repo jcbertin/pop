@@ -36,7 +36,7 @@
  @abstract The animation delegate.
  @discussion See {@ref POPAnimationDelegate} for details.
  */
-@property (weak, nonatomic) id delegate;
+@property (POP_WEAK_PROPERTY, nonatomic) id delegate;
 
 /**
  @abstract The animation tracer.

@@ -17,7 +17,7 @@
 
 @implementation POPAnimationTracer
 {
-  __weak POPAnimation *_animation;
+  POP_WEAK_VARIABLE POPAnimation *_animation;
   POPAnimationState *_animationState;
   NSMutableArray *_events;
   BOOL _animationHasVelocity;

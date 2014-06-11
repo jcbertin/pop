@@ -188,7 +188,7 @@ namespace POP
     return v;
   }
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
   UIEdgeInsets Vector::ui_edge_insets() const
   {

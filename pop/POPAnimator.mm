@@ -46,7 +46,7 @@ using namespace POP;
 class POPAnimatorItem
 {
 public:
-  id __weak object;
+  id POP_WEAK_VARIABLE object;
   NSString *key;
   POPAnimation *animation;
   NSInteger refCount;
@@ -71,8 +71,8 @@ public:
 
 };
 
-typedef std::shared_ptr<POPAnimatorItem> POPAnimatorItemRef;
-typedef std::shared_ptr<const POPAnimatorItem> POPAnimatorItemConstRef;
+typedef SHARED_PTR<POPAnimatorItem> POPAnimatorItemRef;
+typedef SHARED_PTR<const POPAnimatorItem> POPAnimatorItemConstRef;
 
 typedef std::list<POPAnimatorItemRef> POPAnimatorItemList;
 typedef POPAnimatorItemList::iterator POPAnimatorItemListIterator;
@@ -396,6 +396,14 @@ static void stopAndCleanup(POPAnimator *self, POPAnimatorItemRef item, bool shou
   }
 }
 
+#if TARGET_ATV && __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0
+static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info)
+{
+  POPAnimator* animator = (__bridge POPAnimator*)info;
+  [animator _processPendingList];
+}
+#endif
+
 - (void)_scheduleProcessPendingList
 {
   // see WebKit for magic numbers, eg http://trac.webkit.org/changeset/166540
@@ -406,11 +414,16 @@ static void stopAndCleanup(POPAnimator *self, POPAnimatorItemRef item, bool shou
   OSSpinLockLock(&_lock);
 
   if (!_pendingListObserver) {
-    __weak POPAnimator *weakSelf = self;
-
+#if TARGET_ATV && __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0
+    CFRunLoopObserverContext context = { .info = (__bridge void*)self };
+    _pendingListObserver = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopBeforeWaiting | kCFRunLoopExit, false, POPAnimationApplyRunLoopOrder, runLoopObserverCallBack, &context);
+#else
+    POP_WEAK_VARIABLE POPAnimator *weakSelf = self;
+	  
     _pendingListObserver = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopBeforeWaiting | kCFRunLoopExit, false, POPAnimationApplyRunLoopOrder, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) {
       [weakSelf _processPendingList];
     });
+#endif
 
     if (_pendingListObserver) {
       CFRunLoopAddObserver(CFRunLoopGetMain(), _pendingListObserver,  kCFRunLoopCommonModes);

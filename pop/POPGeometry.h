@@ -9,11 +9,11 @@
 
 #import <Foundation/Foundation.h>
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 #import <UIKit/UIGeometry.h>
 #endif
 
-#if !TARGET_OS_IPHONE
+#if !TARGET_OS_IPHONE || TARGET_ATV
 
 /** NSValue extensions to support animatable types. */
 @interface NSValue (POP)

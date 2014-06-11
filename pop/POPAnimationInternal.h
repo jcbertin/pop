@@ -201,7 +201,7 @@ struct _POPAnimationState
   CFTimeInterval beginTime;
   CFTimeInterval startTime;
   CFTimeInterval lastTime;
-  id __weak delegate;
+  id POP_WEAK_VARIABLE delegate;
   POPAnimationDidStartBlock animationDidStartBlock;
   POPAnimationDidReachToValueBlock animationDidReachToValueBlock;
   POPAnimationCompletionBlock completionBlock;

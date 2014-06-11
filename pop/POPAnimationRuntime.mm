@@ -13,8 +13,14 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#if TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
+#if TARGET_ATV
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+#import <CoreImage/CoreImage.h>
+#endif
+#elif TARGET_OS_IPHONE
+#import <UIKit/UIScreen.h>
+#else
+#import <AppKit/NSScreen.h>
 #endif
 
 #import "POPVector.h"
@@ -96,7 +102,7 @@ static bool FBCompareTypeEncoding(const char *objctype, POPValueType type)
 #endif
               );
     case kPOPValueEdgeInsets:
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
       return strcmp(objctype, @encode(UIEdgeInsets)) == 0;
 #else
       return false;
@@ -220,7 +226,7 @@ id POPBox(VectorConstRef vec, POPValueType type, bool force)
     case kPOPValueRect:
       return [NSValue valueWithCGRect:vec->cg_rect()];
       break;
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
     case kPOPValueEdgeInsets:
       return [NSValue valueWithUIEdgeInsets:vec->ui_edge_insets()];
       break;
@@ -263,7 +269,7 @@ static VectorRef vectorize(id value, POPValueType type)
     case kPOPValueRect:
       vec = Vector::new_cg_rect([value CGRectValue]);
       break;
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
     case kPOPValueEdgeInsets:
       vec = Vector::new_ui_edge_insets([value UIEdgeInsetsValue]);
       break;

@@ -5,3 +5,20 @@
 #ifdef __OBJC__
   #import <Foundation/Foundation.h>
 #endif
+
+#if __has_feature(objc_arc_weak)
+// zeroing weak refs are supported for ivars and properties
+#define POP_WEAK_VARIABLE				__weak
+#define POP_WEAK_PROPERTY				weak
+#elif __has_feature(objc_arc)
+/// zeroing weak refs not supported, fall back to unsafe unretained and assigning
+#define POP_WEAK_VARIABLE				__unsafe_unretained
+#define POP_WEAK_PROPERTY				assign
+#else
+// define something, as this header might be included in a non-ARC project for using compiled code from an ARC static lib
+#define POP_WEAK_VARIABLE
+#define POP_WEAK_PROPERTY				assign
+#endif
+
+#define SHARED_PTR  std::shared_ptr
+

@@ -133,7 +133,7 @@ extern NSString * const kPOPShapeLayerFillColor;
 extern NSString * const kPOPLayoutConstraintConstant;
 
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
 /**
  Common UIView property names.

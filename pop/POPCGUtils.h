@@ -8,7 +8,11 @@
  */
 
 #import <CoreGraphics/CoreGraphics.h>
-#if TARGET_OS_IPHONE
+#if TARGET_ATV
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+#import <CoreImage/CoreImage.h>
+#endif
+#elif TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #endif
 #import "POPDefines.h"
@@ -17,7 +21,7 @@
 #import <SceneKit/SceneKit.h>
 #endif
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 @class UIColor;
 #endif
 
@@ -50,7 +54,7 @@ NS_INLINE SCNVector4 values_to_vec4(const CGFloat values[])
 }
 #endif
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
 NS_INLINE UIEdgeInsets values_to_edge_insets(const CGFloat values[])
 {
@@ -96,7 +100,7 @@ NS_INLINE void values_from_vec4(CGFloat values[], SCNVector4 v)
 }
 #endif
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
 NS_INLINE void values_from_edge_insets(CGFloat values[], UIEdgeInsets i)
 {
@@ -123,7 +127,7 @@ extern CGColorRef POPCGColorRGBACreate(const CGFloat components[]) CF_RETURNS_RE
  */
 extern CGColorRef POPCGColorWithColor(id color);
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
 
 /**
  Takes a UIColor and converts it into RGBA components, if necessary.

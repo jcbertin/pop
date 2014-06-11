@@ -15,7 +15,11 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import <objc/NSObjCRuntime.h>
-#if TARGET_OS_IPHONE
+#if TARGET_ATV
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
+#import <CoreImage/CoreImage.h>
+#endif
+#elif TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #endif
 
@@ -329,7 +333,7 @@ namespace POP {
     CGRect cg_rect() const;
     static Vector *new_cg_rect(const CGRect &r);
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE && !TARGET_ATV
     // UIEdgeInsets support
     UIEdgeInsets ui_edge_insets() const;
     static Vector *new_ui_edge_insets(const UIEdgeInsets &i);
@@ -384,8 +388,8 @@ namespace POP {
   };
 
   /** Convenience typedefs */
-  typedef std::shared_ptr<Vector> VectorRef;
-  typedef std::shared_ptr<const Vector> VectorConstRef;
+  typedef SHARED_PTR<Vector> VectorRef;
+  typedef SHARED_PTR<const Vector> VectorConstRef;
 
 }
 #endif /* defined(__POP__FBVector__) */

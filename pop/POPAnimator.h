@@ -25,7 +25,7 @@
 /**
  @abstract The optional animator delegate.
  */
-@property (weak, nonatomic) id<POPAnimatorDelegate> delegate;
+@property (POP_WEAK_PROPERTY, nonatomic) id<POPAnimatorDelegate> delegate;
 
 @end
 
