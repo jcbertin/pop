@@ -454,7 +454,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     OSSpinLockUnlock(&_lock);
   } else {
     // copy list into vector
-    std::vector<POPAnimatorItemRef> vector{ std::begin(items), std::end(items) };
+    std::vector<POPAnimatorItemRef> vector{ items.begin(), items.end() };
 
     // unlock
     OSSpinLockUnlock(&_lock);
