@@ -762,7 +762,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
   OSSpinLockLock(&_lock);
 
   // get keys
-  NSArray *keys = [(__bridge NSDictionary*)CFDictionaryGetValue(_dict, (__bridge void *)obj) allKeys];
+  NSArray *keys = [(__bridge NSDictionary *)CFDictionaryGetValue(_dict, (__bridge void *)obj) allKeys];
 
   // unlock
   OSSpinLockUnlock(&_lock);
@@ -790,8 +790,9 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 #else
   if (NULL != self->_displayLink) {
     CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(self->_displayLink);
-    if (period.flags & kCVTimeIsIndefinite)
+    if (period.flags & kCVTimeIsIndefinite) {
       return 0;
+    }
     return ((CFTimeInterval)period.timeValue / (CFTimeInterval)period.timeScale);
   }
   return (1.0 / (CFTimeInterval)kDisplayTimerFrequency);
